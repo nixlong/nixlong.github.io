@@ -68,7 +68,7 @@ hexo generate
 
 ### 6\. 生成并部署（一键部署到GitHub Pages）
 
-需先配置GitHub仓库（见下文第二部分），安装部署插件后，执行：
+需先配置GitHub仓库（见下文第三部分），安装部署插件后，执行：
 
 ```bash
 # 安装部署插件（仅首次需要）
@@ -79,7 +79,9 @@ hexo clean && hexo g -d
 # 简写：hexo d -g（顺序：生成→部署，建议先clean，避免缓存问题）
 ```
 
-## 六、Hexo Butterfly主题安装与配置
+⚠️ 关键补充（解决hexo d不生成gh\-pages、不推送问题）：执行hexo d前，必须完成以下配置，否则无法自动生成gh\-pages分支和推送。
+
+## 二、Hexo Butterfly主题安装与配置
 
 Butterfly是Hexo热门简约主题，支持响应式、自定义配置、插件扩展，适配博客、个人网站场景，以下是完整安装、配置流程（适配最新版Butterfly）。
 
@@ -201,7 +203,7 @@ hexo clean && hexo s
 # 解决方案：将图片放入source/img目录，配置路径时写 /img/图片名.后缀
 ```
 
-## 二、GitHub 版本管理命令（开发目录修改历史管理）
+## 三、GitHub 版本管理命令（开发目录修改历史管理）
 
 核心原则：1个GitHub仓库，2个分支（main分支存开发源码，gh\-pages分支存部署的静态文件），无需创建2个仓库。
 
@@ -265,7 +267,118 @@ git branch -a
 git checkout gh-pages
 ```
 
-## 三、日常开发标准流程（推荐）
+## 四、hexo d 无法生成gh\-pages分支、不自动推送的排查与解决
+
+核心原因：**部署插件未正确安装** 或 **\_config\.yml 中deploy配置错误**（最常见），按以下步骤逐一排查，新手可照做。
+
+### 1\. 第一步：确认部署插件（hexo\-deployer\-git）已正确安装
+
+这是最基础的前提，插件未安装或安装失败，hexo d会无效，无法生成gh\-pages分支。
+
+```bash
+# 1. 进入Hexo根目录（确保在my-hexo-site下）
+cd my-hexo-site
+
+# 2. 查看插件是否已安装（查看node_modules中是否有hexo-deployer-git）
+ls node_modules | grep hexo-deployer-git
+
+# 3. 若未找到（无输出），重新安装插件（必做）
+npm install hexo-deployer-git --save
+
+# 4. 安装完成后，再次验证（有输出即成功）
+ls node_modules | grep hexo-deployer-git
+```
+
+补充：若安装失败，可更换npm源后重新安装（解决网络问题）：
+
+```bash
+# 更换淘宝npm源
+npm config set registry https://registry.npm.taobao.org
+
+# 重新安装插件
+npm install hexo-deployer-git --save
+```
+
+### 2\. 第二步：检查 \_config\.yml 中 deploy 配置（最关键，90%的问题出在这里）
+
+hexo d 会读取根目录 \_config\.yml 中的deploy配置，配置错误会导致无法推送、不生成gh\-pages分支，需严格按以下格式配置（缩进、参数均不能错）。
+
+```yaml
+# 1. 打开根目录 _config.yml 文件（用IDE或记事本编辑）
+# 2. 找到最底部的deploy配置，修改为以下内容（替换成你的仓库地址）
+deploy:
+  type: git  # 固定值，不能改，指定部署方式为git
+  repo: https://github.com/你的用户名/你的仓库名.git  # 替换成你的GitHub仓库地址（HTTPS/SSH均可）
+  branch: gh-pages  # 固定值，指定推送到gh-pages分支（自动生成该分支）
+  message: Site updated: {{ now("YYYY-MM-DD HH:mm:ss") }}  # 可选，自定义提交信息，可省略
+```
+
+⚠️ 重点注意（缩进错误会直接导致配置失效）：
+
+- deploy: 后面的参数（type、repo、branch），必须缩进 **2个空格**（不能用Tab，YAML格式对缩进敏感）；
+
+- repo地址必须正确，可从GitHub仓库复制（仓库页面 → Code → 复制HTTPS地址）；
+
+- branch必须写 gh\-pages（小写，不能写错），hexo d会自动在GitHub仓库创建该分支。
+
+### 3\. 第三步：确认已生成静态文件（public目录）
+
+hexo d 本质是推送 hexo g 生成的public目录内容，若未生成public目录，部署会无效，无任何推送操作。
+
+```bash
+# 1. 先执行清理命令（避免缓存导致public目录异常）
+hexo clean
+
+# 2. 生成public目录（必须执行，否则无内容可推送）
+hexo g
+
+# 3. 查看public目录是否生成（有输出即成功）
+ls public
+```
+
+若ls public无输出，说明hexo g执行失败，需检查是否有报错（如主题配置错误），解决后重新执行hexo g。
+
+### 4\. 第四步：确认GitHub仓库已绑定（本地与远程仓库连接正常）
+
+若本地未绑定GitHub远程仓库，hexo d无法推送内容，自然不会生成gh\-pages分支。
+
+```bash
+# 1. 查看本地是否已绑定远程仓库（有origin相关输出即正常）
+git remote -v
+
+# 2. 若无输出（未绑定），重新绑定（替换成你的仓库地址）
+git remote add origin https://github.com/你的用户名/你的仓库名.git
+
+# 3. 再次验证绑定是否成功
+git remote -v
+```
+
+### 5\. 第五步：重新执行部署命令（验证配置是否生效）
+
+完成以上4步后，执行以下命令，即可自动生成gh\-pages分支并推送内容：
+
+```bash
+# 一键清理、生成、部署（推荐，避免缓存问题）
+hexo clean && hexo g -d
+```
+
+执行后，查看终端输出：若出现「Branch \&\#39;gh\-pages\&\#39; set up to track remote branch \&\#39;gh\-pages\&\#39; from \&\#39;origin\&\#39;」，说明gh\-pages分支已自动创建并推送成功。
+
+### 6\. 常见异常补充（若仍失败）
+
+```bash
+# 异常1：终端提示「fatal: could not read Username for 'https://github.com': No such device or address」
+# 解决方案：GitHub仓库地址改用SSH格式（需提前配置SSH密钥），替换repo地址为：
+# git@github.com:你的用户名/你的仓库名.git
+
+# 异常2：执行hexo d无任何提示，也无报错
+# 解决方案：删除根目录的 .deploy_git 文件夹，重新执行 hexo clean && hexo g -d
+
+# 异常3：提示「permission denied」（权限不足）
+# 解决方案：检查GitHub仓库权限，确保当前账号有推送权限，或重新配置SSH密钥
+```
+
+## 五、日常开发标准流程（推荐）
 
 ```bash
 # 1. 进入Hexo项目目录
@@ -286,7 +399,7 @@ git push
 hexo d
 ```
 
-## 四、常见问题补充命令
+## 六、常见问题补充命令
 
 ```bash
 # 1. 撤销本地修改（未git add的情况下）
@@ -306,7 +419,7 @@ cd themes/你的主题名
 npm install
 ```
 
-## 五、关键注意事项
+## 七、关键注意事项
 
 - 部署前需在 Hexo 配置文件 `\_config\.yml` 中，配置deploy参数（仓库地址、分支为gh\-pages）。
 

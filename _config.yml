@@ -101,4 +101,6 @@ theme: butterfly
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+  type: git  # 固定值，不能改，指定部署方式为git
+  repo: git@github.com:nixlong/nixlong.github.io.git  # 替换成你的GitHub仓库地址（HTTPS/SSH均可）
+  branch: gh-pages  # 固定值，指定推送到gh-pages分支（自动生成该分支）
