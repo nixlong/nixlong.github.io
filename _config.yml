@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
+title: TokenEpoch
 subtitle: ''
 description: ''
 keywords:
-author: John Doe
-language: en
+author: nixlong
+language: zh-CN
 timezone: ''
 
 # URL
@@ -96,11 +96,18 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: butterfly
+theme: fluid
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
+# Search
+search:
+  path: search.json
+  field: post
+  content: true
+
+# Deployment
 deploy:
-  type: git  # 固定值，不能改，指定部署方式为git
-  repo: git@github.com:nixlong/nixlong.github.io.git  # 替换成你的GitHub仓库地址（HTTPS/SSH均可）
-  branch: gh-pages  # 固定值，指定推送到gh-pages分支（自动生成该分支）
+  type: git
+  repo: git@github.com:nixlong/nixlong.github.io.git
+  branch: gh-pages

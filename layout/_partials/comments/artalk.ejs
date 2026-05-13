@@ -1,0 +1,25 @@
+<% if (theme.artalk && theme.artalk.server) { %>
+  <div id="artalk"></div>
+  <script>
+    Fluid.utils.loadComments('#artalk', function() {
+      Fluid.utils.createScriptLink('<%- theme.artalk.server %>/dist/Artalk.js', function() {
+        Fluid.utils.createCssLink('<%- theme.artalk.server %>/dist/Artalk.css')
+        var options = Object.assign(
+          <%- JSON.stringify(theme.artalk || {}) %>,
+          {
+            el: '#artalk',
+            pageKey: '<%= page.path %>',
+            pageTitle: '<%= page.title %>'
+          }
+        )
+        new Artalk(options);
+        Fluid.utils.waitElementVisible('#artalk .atk-comment', function() {
+          var imgSelector = '#artalk .atk-comment img:not(.atk-emoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+<% } %>
