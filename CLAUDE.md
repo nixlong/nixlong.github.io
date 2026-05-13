@@ -37,7 +37,7 @@ themes/
 
 - **Docs**: https://hexo.fluid-dev.com/docs/
 - **Features enabled**: local search, dark mode (auto), code copy button, TOC, image lazy loading, typed banner subtitle
-- **Comment system**: Artalk (self-hosted) — requires `artalk.server` to be set in `_config.fluid.yml` before comments render
+- **Comment system**: Artalk (self-hosted) — requires `artalk.server` in `_config.fluid.yml` + running Artalk backend (`npx artalk server`, default port 23366)
 - **Custom files**: `layout/_partials/comments/artalk.ejs` — also copied to `node_modules/hexo-theme-fluid/layout/_partials/comments/artalk.ejs` (theme partial resolution quirk)
 
 ## Plugins

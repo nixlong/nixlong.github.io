@@ -4,7 +4,17 @@
       "Bash(npm install *)",
       "Bash(npx hexo *)",
       "Bash(npm search *)",
-      "WebSearch"
+      "WebSearch",
+      "WebFetch(domain:artalk.js.org)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4000)",
+      "mcp__plugin_everything-claude-code_playwright__browser_navigate",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:23366)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:23366/dist/Artalk.js)",
+      "Bash(curl -s http://localhost:4000/2026/05/08/hello-world/)",
+      "Bash(curl -s http://127.0.0.1:23366/dist/Artalk.js)",
+      "Bash(curl -s http://127.0.0.1:23366/dist/Artalk.iife.js)",
+      "Bash(npm uninstall *)",
+      "Bash(curl *)"
     ]
   }
 }

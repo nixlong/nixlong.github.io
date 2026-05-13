@@ -78,23 +78,19 @@ post:
     enable: true
 
 # -------------------------------
-# Artalk Comment System
-# Self-hosted comment system
-# See: https://artalk.js.org
+# Artalk
 # -------------------------------
 artalk:
-  # Your Artalk server URL (required)
-  server: 'http://localhost:4000'
-  # Site name (leave empty to use backend config)
-  site: ''
-  # Enable dark mode: false | 'auto' | true
+  server: 'http://127.0.0.1:23366'
+  site: '本地测试站点'
   darkMode: auto
-  # Use backend configuration
   useBackendConf: true
-  # Show PV count
   pvCount: false
-  # Show comment count
   commentCount: true
+  # 核心：强制加载 Artalk 服务自带的 JS/CSS，彻底屏蔽主题错误路径
+  cdn:
+    js: "http://127.0.0.1:23366/dist/Artalk.js"
+    css: "http://127.0.0.1:23366/dist/Artalk.css"
 
 # -------------------------------
 # Footer
