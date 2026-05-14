@@ -81,7 +81,7 @@ post:
 # Artalk
 # -------------------------------
 artalk:
-  server: 'http://127.0.0.1:23366'
+  server: ''
   site: '本地测试站点'
   darkMode: auto
   useBackendConf: true
