@@ -64,6 +64,10 @@ index_generator:
   per_page: 10
   order_by: -date
 
+# Archive generator (disabled — using custom quarterly archive page)
+archive_generator:
+  enabled: false
+
 # Category & Tag
 default_category: uncategorized
 category_map:

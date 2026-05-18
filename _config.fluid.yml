@@ -9,11 +9,14 @@
 navbar:
   blog_title: TokenEpoch
   menu:
-    - { key: "home", link: "/", icon: "fas fa-home" }
-    - { key: "archives", link: "/archives/", icon: "fas fa-archive" }
-    - { key: "categories", link: "/categories/", icon: "fas fa-folder" }
-    - { key: "tags", link: "/tags/", icon: "fas fa-tags" }
-    - { key: "about", link: "/about/", icon: "fas fa-user" }
+    - { key: "home", link: "/", icon: "fas fa-home", name: "首页" }
+    - { key: "软件服务", icon: "fas fa-folder", submenu:
+        [{ key: "AI", link: "/categories/AI/", icon: "fas fa-robot" },
+         { key: "Agents", link: "/categories/Agents/", icon: "fas fa-network-wired" },
+         { key: "Tools", link: "/categories/Tools/", icon: "fas fa-tools" }] }
+    - { key: "archives", link: "/archives/", icon: "fas fa-archive", name: "归档" }
+    - { key: "tags", link: "/tags/", icon: "fas fa-tags", name: "标签" }
+    - { key: "about", link: "/about/", icon: "fas fa-user", name: "关于" }
 
 # -------------------------------
 # Home Page Banner
